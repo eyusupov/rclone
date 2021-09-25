@@ -114,7 +114,7 @@ type ConfigInfo struct {
 	ProgressTerminalTitle  bool
 	Cookie                 bool
 	UseMmap                bool
-	CaCert                 string // Client Side CA
+	CaCerts                []string // Client Side CA
 	ClientCert             string // Client Side Cert
 	ClientKey              string // Client Side Key
 	MultiThreadCutoff      SizeSuffix

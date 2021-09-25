@@ -73,15 +73,17 @@ func NewTransportCustom(ctx context.Context, customize func(*http.Transport)) ht
 	}
 
 	// Load CA cert
-	if ci.CaCert != "" {
-		caCert, err := ioutil.ReadFile(ci.CaCert)
-		if err != nil {
-			log.Fatalf("Failed to read --ca-cert: %v", err)
-		}
+	if len(ci.CaCerts) > 0 {
 		caCertPool := x509.NewCertPool()
-		ok := caCertPool.AppendCertsFromPEM(caCert)
-		if !ok {
-			log.Fatalf("Failed to add certificates from --ca-cert")
+		for _, certPath := range ci.CaCerts {
+			caCert, err := ioutil.ReadFile(certPath)
+			if err != nil {
+				log.Fatalf("Failed to read --ca-cert: %v", err)
+			}
+			ok := caCertPool.AppendCertsFromPEM(caCert)
+			if !ok {
+				log.Fatalf("Failed to add certificates from --ca-cert")
+			}
 		}
 		t.TLSClientConfig.RootCAs = caCertPool
 	}
